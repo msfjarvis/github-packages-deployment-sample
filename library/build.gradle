@@ -2,7 +2,7 @@ apply plugin: "com.android.library"
 apply plugin: "kotlin-android"
 
 apply from: "../dependencies.gradle"
-apply from: "../bintrayconfig.gradle"
+// apply from: "../bintrayconfig.gradle"
 
 android {
   compileSdkVersion versions.compileSdk
@@ -25,16 +25,6 @@ android {
         "src/main/res",
         "src/main/res-public"
     ]
-  }
-}
-
-afterEvaluate {
-  tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
-    if (modulePackageId != null && modulePackageId != "") {
-      kotlinOptions.freeCompilerArgs += ["-module-name", modulePackageId]
-    } else {
-      logger.warn("Skipping setting compiler module name, no package to use.")
-    }
   }
 }
 
