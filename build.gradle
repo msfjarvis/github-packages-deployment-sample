@@ -14,6 +14,7 @@ buildscript {
     classpath deps.gradle_plugins.kotlin
     classpath deps.gradle_plugins.spotless
     classpath deps.gradle_plugins.versions
+    classpath deps.gradle_plugins.android_maven_publish
   }
 }
 
