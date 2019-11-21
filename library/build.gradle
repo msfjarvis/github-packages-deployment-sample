@@ -43,6 +43,10 @@ publishing {
   publications {
     gpr(MavenPublication) {
       from(components.android)
+      groupId "$GROUP"
+      artifactId "deployment-sample-library"
+      // Use your configured version outside CI, the SHA of the top commit inside.
+      version System.env['GITHUB_SHA'] == null ? "$VERSION" : System.env['GITHUB_SHA']
     }
   }
 }
