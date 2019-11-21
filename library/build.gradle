@@ -1,0 +1,52 @@
+apply plugin: "com.android.library"
+apply plugin: "kotlin-android"
+
+apply from: "../dependencies.gradle"
+apply from: "../bintrayconfig.gradle"
+
+android {
+  compileSdkVersion versions.compileSdk
+  buildToolsVersion versions.buildTools
+
+  compileOptions {
+    sourceCompatibility 1.8
+    targetCompatibility 1.8
+  }
+
+  defaultConfig {
+    minSdkVersion versions.minSdk
+    targetSdkVersion versions.compileSdk
+    versionCode versions.publishVersionCode
+    versionName versions.publishVersion
+  }
+
+  sourceSets {
+    main.res.srcDirs = [
+        "src/main/res",
+        "src/main/res-public"
+    ]
+  }
+}
+
+afterEvaluate {
+  tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+    if (modulePackageId != null && modulePackageId != "") {
+      kotlinOptions.freeCompilerArgs += ["-module-name", modulePackageId]
+    } else {
+      logger.warn("Skipping setting compiler module name, no package to use.")
+    }
+  }
+}
+
+dependencies {
+  api deps.support.app_compat
+  implementation deps.kotlin.stdlib8
+
+  testImplementation deps.kotlin.test.mockito
+  testImplementation deps.test.robolectric
+  testImplementation deps.test.junit
+  testImplementation deps.test.mockito_core
+  testImplementation deps.test.truth
+}
+
+apply from: "../spotless.gradle"

@@ -1,0 +1,32 @@
+apply plugin: "com.android.application"
+apply plugin: "kotlin-android"
+
+apply from: "../dependencies.gradle"
+
+android {
+  compileSdkVersion versions.compileSdk
+  buildToolsVersion versions.buildTools
+
+  compileOptions {
+    sourceCompatibility 1.8
+    targetCompatibility 1.8
+  }
+
+  defaultConfig {
+    applicationId "com.afollestad.librarytemplate"
+    minSdkVersion versions.minSdk
+    targetSdkVersion versions.compileSdk
+    versionCode versions.publishVersionCode
+    versionName versions.publishVersion
+  }
+}
+
+dependencies {
+  implementation project(":library")
+  implementation deps.kotlin.stdlib8
+
+  implementation deps.support.app_compat
+  implementation deps.support.constraint_layout
+}
+
+apply from: "../spotless.gradle"
