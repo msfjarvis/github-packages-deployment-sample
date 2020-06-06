@@ -3,7 +3,6 @@ apply plugin: "kotlin-android"
 apply plugin: "maven-publish"
 
 apply from: "../dependencies.gradle"
-// apply from: "../bintrayconfig.gradle"
 
 android {
   compileSdkVersion versions.compileSdk
