@@ -1,6 +1,6 @@
 apply plugin: "com.android.library"
 apply plugin: "kotlin-android"
-apply plugin: "digital.wup.android-maven-publish"
+apply plugin: "maven-publish"
 
 apply from: "../dependencies.gradle"
 // apply from: "../bintrayconfig.gradle"
@@ -29,24 +29,26 @@ android {
   }
 }
 
-publishing {
-  repositories {
-    maven {
-      name = "GitHubPackages"
-      url = uri("https://maven.pkg.github.com/msfjarvis/github-packages-deployment-sample")
-      credentials {
-        username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
-        password = project.findProperty("gpr.key") ?: System.getenv("PASSWORD")
+afterEvaluate {
+  publishing {
+    repositories {
+      maven {
+        name = "GitHubPackages"
+        url = uri("https://maven.pkg.github.com/msfjarvis/github-packages-deployment-sample")
+        credentials {
+          username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
+          password = project.findProperty("gpr.key") ?: System.getenv("PASSWORD")
+        }
       }
     }
-  }
-  publications {
-    gpr(MavenPublication) {
-      from(components.android)
-      groupId "$GROUP"
-      artifactId "deployment-sample-library"
-      // Use your configured version outside CI, the SHA of the top commit inside.
-      version System.env['GITHUB_SHA'] == null ? "$VERSION" : System.env['GITHUB_SHA']
+    publications {
+      release(MavenPublication) {
+        from components.release
+        groupId = "$GROUP"
+        artifactId = "deployment-sample-library"
+        // Use your configured version outside CI, the SHA of the top commit inside.
+        version = System.env['GITHUB_SHA'] == null ? "$VERSION" : System.env['GITHUB_SHA']
+      }
     }
   }
 }
